@@ -19,6 +19,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEAS
 # Установка исходных файлов проекта.
 set(SOURCES
 	src/main.cpp
+	src/App.cpp
 )
 
 # Формирование итогового исполняемого файла.
