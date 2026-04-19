@@ -19,8 +19,8 @@
 
 Для сборки проекта выполните следующие команды из корня проекта:
 ```bash
-cmake -S . -B build;
-cmake --build build;
-cd build;
+cmake -S . -B build
+cmake --build build
+cd build
 ./maze_generator
 ```
