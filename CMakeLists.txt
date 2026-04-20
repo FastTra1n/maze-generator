@@ -20,6 +20,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEAS
 set(SOURCES
 	src/main.cpp
 	src/App.cpp
+	src/Maze.cpp
+	src/Cell.cpp
 )
 
 # Формирование итогового исполняемого файла.
