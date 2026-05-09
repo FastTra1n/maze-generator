@@ -2,6 +2,8 @@
 #include "MazeBuilder.h"
 #include "DFSGenerator.h"
 #include "KruskalGenerator.h"
+#include "AStarFinder.h"
+#include "BFSFinder.h"
 #include <iostream>
 
 App::App()
@@ -92,8 +94,29 @@ void App::setGenerator() {
 	}
 }
 
-void App::setFinder() {
+std::unique_ptr<IPathFinderStrategy> App::createFinder(int finderType) {
+	switch (finderType) {
+		case 1: return std::make_unique<AStarFinder>();
+		case 2: return std::make_unique<BFSFinder>();
+		default: return nullptr;
+	}
+}
 
+void App::setFinder() {
+	std::cout << "Выберите алгоритм поиска пути:\n"
+		<< "1. A*\n"
+		<< "2. BFS (Breadth-First Search)\n"
+		<< "Ваш выбор: ";
+	int choice;
+	std::cin >> choice;
+
+	finder = createFinder(choice);
+	if (finder) {
+		std::cout << "Алгоритм поиска пути успешно выбран.\n\n";
+	}
+	else {
+		std::cout << "Неверный тип алгоритма поиска пути. Проверьте корректность выбора.\n\n";
+	}
 }
 
 void App::generate() {

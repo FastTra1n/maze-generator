@@ -29,6 +29,7 @@ private:
 	void display();
 
 	std::unique_ptr<IGeneratorStrategy> createGenerator(int generatorType);
+	std::unique_ptr<IPathFinderStrategy> createFinder(int finderType);
 };
 
 #endif

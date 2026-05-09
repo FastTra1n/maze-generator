@@ -25,6 +25,8 @@ set(SOURCES
 	src/MazeBuilder.cpp
 	src/DFSGenerator.cpp
 	src/KruskalGenerator.cpp
+	src/AStarFinder.cpp
+	src/BFSFinder.cpp
 )
 
 # Формирование итогового исполняемого файла.
