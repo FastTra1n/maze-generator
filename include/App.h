@@ -27,6 +27,8 @@ private:
 	void setFinder();
 	void generate();
 	void display();
+
+	std::unique_ptr<IGeneratorStrategy> createGenerator(int generatorType);
 };
 
 #endif

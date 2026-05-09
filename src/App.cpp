@@ -1,5 +1,7 @@
 #include "App.h"
 #include "MazeBuilder.h"
+#include "DFSGenerator.h"
+#include "KruskalGenerator.h"
 #include <iostream>
 
 App::App()
@@ -62,12 +64,32 @@ void App::setMazeSize() {
 	}
 
 	maze = MazeBuilder().setSize(width, height).build();
-	std::cout << maze;
 	std::cout << "Лабиринт успешно создан.\n\n";
 }
 
-void App::setGenerator() {
+std::unique_ptr<IGeneratorStrategy> App::createGenerator(int generatorType) {
+	switch (generatorType) {
+		case 1: return std::make_unique<DFSGenerator>();
+		case 2: return std::make_unique<KruskalGenerator>();
+		default: return nullptr;
+	}
+}
 
+void App::setGenerator() {
+	std::cout << "Выберите алгоритм генерации:\n"
+		<< "1. DFS (Depth-First Search)\n"
+		<< "2. Kruskal\n"
+		<< "Ваш выбор: ";
+	int choice;
+	std::cin >> choice;
+	
+	generator = createGenerator(choice);
+	if (generator) {
+		std::cout << "Алгоритм генерации успешно выбран.\n\n";
+	}
+	else {
+		std::cout << "Неверный тип генератора. Проверьте корректность выбора.\n\n";
+	}
 }
 
 void App::setFinder() {

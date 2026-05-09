@@ -23,6 +23,8 @@ set(SOURCES
 	src/Maze.cpp
 	src/Cell.cpp
 	src/MazeBuilder.cpp
+	src/DFSGenerator.cpp
+	src/KruskalGenerator.cpp
 )
 
 # Формирование итогового исполняемого файла.
