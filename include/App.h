@@ -1,6 +1,11 @@
 #ifndef APP_H
 #define APP_H
 
+#include <memory>
+#include "Maze.h"
+#include "IGeneratorStrategy.h"
+#include "IPathFinderStrategy.h"
+
 class App {
 public:
 	App();
@@ -9,6 +14,12 @@ public:
 	void run();
 
 private:
+	std::unique_ptr<Maze> maze;
+	std::unique_ptr<IGeneratorStrategy> generator;
+	std::unique_ptr<IPathFinderStrategy> finder;
+
+	int width, height;
+
 	void showMenu();
 	void handleCommand(int choice);
 	void setMazeSize();

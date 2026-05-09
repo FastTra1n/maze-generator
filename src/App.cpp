@@ -1,7 +1,14 @@
 #include "App.h"
+#include "MazeBuilder.h"
 #include <iostream>
 
-App::App() {} ;
+App::App()
+	: maze(nullptr)
+	, generator(nullptr)
+	, finder(nullptr)
+	, width(0)
+	, height(0) {
+} ;
 
 void App::run() {
 	std::cout << "MazeGenerator: Генератор лабиринтов и поиск пути" << std::endl;
@@ -43,7 +50,20 @@ void App::handleCommand(int choice) {
 }
 
 void App::setMazeSize() {
+	std::cout << "Введите ширину лабиринта (5-200): ";
+	std::cin >> width;
+	std::cout << "Введите высоту лабиринта (5-200): ";
+	std::cin >> height;
 
+	if (width < 5 || width > 200 || height < 5 || height > 200) {
+		std::cout << "Некорректные размеры. Используйте диапазон 5-200.\n\n";
+		width = height = 0;
+		return;
+	}
+
+	maze = MazeBuilder().setSize(width, height).build();
+	std::cout << maze;
+	std::cout << "Лабиринт успешно создан.\n\n";
 }
 
 void App::setGenerator() {

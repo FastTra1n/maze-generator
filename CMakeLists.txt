@@ -22,6 +22,7 @@ set(SOURCES
 	src/App.cpp
 	src/Maze.cpp
 	src/Cell.cpp
+	src/MazeBuilder.cpp
 )
 
 # Формирование итогового исполняемого файла.
