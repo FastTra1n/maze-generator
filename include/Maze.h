@@ -1,10 +1,16 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-#include <vector>
 #include "Cell.h"
 #include "IGeneratorStrategy.h"
 #include "IPathFinderStrategy.h"
+#include <vector>
+#include <optional>
+
+struct PathData {
+	int startX, startY, endX, endY;
+	std::vector<Cell> currentPath;
+};
 
 class Maze {
 public:
@@ -18,7 +24,7 @@ public:
 
 	void generate(IGeneratorStrategy& strategy);
 	std::vector<Cell> findPath(IPathFinderStrategy& strategy, Cell& start, Cell& end);
-	void display() const;
+	void display(std::optional<PathData> path) const;
 	
 private:
 	int width, height;

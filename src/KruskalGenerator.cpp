@@ -37,7 +37,7 @@ private:
 	std::vector<int> parent;
 };
 
-int cellIndex(int x, int y, int width) { return x * width + y; }
+int cellIndex(int x, int y, int width) { return y * width + x; }
 
 void KruskalGenerator::generate(Maze& maze) {
 	int width = maze.getWidth();
@@ -88,7 +88,7 @@ void KruskalGenerator::generate(Maze& maze) {
 				cell1.breakWall(1);
 				cell2.breakWall(3);
 			} 
-			else { // Þã.
+			else if (e.dir == 2) { // Þã.
 				cell1.breakWall(2);
 				cell2.breakWall(0);
 			}

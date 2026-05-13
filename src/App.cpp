@@ -10,9 +10,9 @@ App::App()
 	: maze(nullptr)
 	, generator(nullptr)
 	, finder(nullptr)
-	, width(0)
-	, height(0) {
-} ;
+	, width(0), height(0)
+	, startX(0), startY(0), endX(0), endY(0)
+	, pathData(std::nullopt) {};
 
 void App::run() {
 	std::cout << "MazeGenerator: Генератор лабиринтов и поиск пути" << std::endl;
@@ -37,7 +37,8 @@ void App::showMenu() {
 			  << "3. Выбрать алгоритм поиска пути\n"
 		      << "4. Установить начальную и конечную точки\n"
 		      << "5. Сгенерировать лабиринт\n"
-			  << "6. Показать лабиринт\n"
+			  << "6. Найти путь\n"
+			  << "7. Показать лабиринт\n"
 		      << "Выберите один из вышеупомянутых пунктов (для выхода введите '0'): ";
 }
 
@@ -46,9 +47,10 @@ void App::handleCommand(int choice) {
 		case 1: setMazeSize(); break;
 		case 2: setGenerator(); break;
 		case 3: setFinder(); break;
-		case 4: break;
+		case 4: setStartEndPoints(); break;
 		case 5: generate(); break;
-		case 6: display(); break;
+		case 6: findPath(); break;
+		case 7: display(); break;
 		default: std::cout << "Неизвестная команда: проверьте корректность введённого пункта.\n"; break;
 	}
 }
@@ -130,7 +132,62 @@ void App::generate() {
 	}
 
 	maze->generate(*generator);
-	std::cout << "Лабиринт успешно сгенерирован. Для просмотра результата выберите 6 пункт.\n\n";
+	std::cout << "Лабиринт успешно сгенерирован. Для просмотра результата выберите 7 пункт.\n\n";
+	currentPath.clear();
+}
+
+void App::setStartEndPoints() {
+	if (!maze) {
+		std::cout << "Сначала создайте лабиринт, перед тем как устанавливать начальную и конечную точки.\n\n";
+		return;
+	}
+
+	std::cout << "Положение точек определяется в декартовой системе координат.\n"
+			  << "Формат ввода координат: x y. Начальная клетка слева сверху имеет координаты x=0 и y=0.\n";
+	std::cout << "Введите координаты начальной точки: ";
+	std::cin >> startX >> startY;
+	if (startX < 0 || startX >= width || startY < 0 || startY >= height) {
+		std::cout << "Заданная координата находится вне границ лабиринта. Проверьте корректность введённых x и y.\n\n";
+		return;
+	}
+	std::cout << "Введите координаты конечной точки: ";
+	std::cin >> endX >> endY;
+	if (endX < 0 || endX >= width || endY < 0 || endY >= height) {
+		std::cout << "Заданная координата находится вне границ лабиринта. Проверьте корректность введённых x и y.\n\n";
+		return;
+	}
+	
+	if (startX == endX && startY == endY) {
+		std::cout << "Координаты начальной и конечной точек совпадают. Путь нулевой длины.\n\n";
+	}
+	std::cout << "Точки успешно установлены.\n\n";
+	currentPath.clear();
+}
+
+void App::findPath() {
+	if (!maze) {
+		std::cout << "Сначала создайте лабиринт, перед тем как находить оптимальный путь.\n\n";
+		return;
+	}
+	if (!finder) {
+		std::cout << "Необходимо сначала выбрать алгоритм поиска пути.\n\n";
+		return;
+	}
+	if (startX == 0 && startY == 0 && endX == 0 && endY == 0) {
+		std::cout << "Для поиска оптимального пути поставьте начальную и конечную точки.\n\n";
+		return;
+	}
+	Cell startCell(startX, startY);
+	Cell endCell(endX, endY);
+	currentPath = maze->findPath(*finder, startCell, endCell);
+	if (currentPath.empty()) {
+		std::cout << "Оптимальный путь не найден.\n\n";
+	}
+	else {
+		std::cout << "Путь найден, длина: " << currentPath.size() << " клеток.\n\n";
+	}
+	pathData = { startX, startY, endX, endY, currentPath };
+	display();
 }
 
 void App::display() {
@@ -139,5 +196,5 @@ void App::display() {
 		return;
 	}
 
-	maze->display();
+	maze->display(pathData);
 }

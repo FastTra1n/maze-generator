@@ -1,10 +1,11 @@
 #ifndef APP_H
 #define APP_H
 
-#include <memory>
 #include "Maze.h"
 #include "IGeneratorStrategy.h"
 #include "IPathFinderStrategy.h"
+#include <memory>
+#include <optional>
 
 class App {
 public:
@@ -19,12 +20,17 @@ private:
 	std::unique_ptr<IPathFinderStrategy> finder;
 
 	int width, height;
+	int startX, startY, endX, endY;
+	std::vector<Cell> currentPath;
+	std::optional<PathData> pathData;
 
 	void showMenu();
 	void handleCommand(int choice);
 	void setMazeSize();
 	void setGenerator();
 	void setFinder();
+	void setStartEndPoints();
+	void findPath();
 	void generate();
 	void display();
 
