@@ -3,6 +3,7 @@
 #include <cmath>
 #include <set>
 #include <queue>
+#include <iostream>
 
 bool wallsMatch(const Cell& a, const Cell& b, int dir) {
 	int opposite = (dir + 2) % 4;
@@ -81,17 +82,26 @@ bool isValidPath(const Maze& maze, const std::vector<Cell>& path, const Cell& st
 	if (path.empty()) return false;
 	if (path.front().getX() != start.getX() || path.front().getY() != start.getY()) return false;
 	if (path.back().getX() != end.getX() || path.back().getY() != end.getY()) return false;
-	for (int i = 0; i < path.size() - 1; ++i)
-	{
+
+	std::set<std::pair<int, int>> seen;
+	seen.insert({ path[0].getX(), path[0].getY() });
+
+	for (size_t i = 0; i < path.size() - 1; ++i) {
 		int dx = path[i + 1].getX() - path[i].getX();
 		int dy = path[i + 1].getY() - path[i].getY();
 		if (abs(dx) + abs(dy) != 1) return false;
-	}
 
-	std::set<std::pair<int, int>> seen;
-	for (auto& c : path)
-	{
-		if (!seen.insert({ c.getX(), c.getY() }).second) return false;
+		int dir;
+		if (dx == 1) dir = 1;
+		else if (dx == -1) dir = 3;
+		else if (dy == 1) dir = 2;
+		else dir = 0;
+
+		if (maze.getCell(path[i].getX(), path[i].getY()).isWall(dir))
+			return false;
+
+		if (!seen.insert({ path[i + 1].getX(), path[i + 1].getY() }).second)
+			return false;
 	}
 	return true;
 }
