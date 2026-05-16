@@ -9,3 +9,5 @@ add_executable(tests
 )
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain maze_lib)
 target_include_directories(tests PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+add_subdirectory(integration)
